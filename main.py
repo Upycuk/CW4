@@ -15,7 +15,6 @@ def main():
         logger.exception(f'Ошибка обращения к HHAPI. {a}')
         print('Что-то пошло не так :(\nПриносим наши извинения.')
 
-    hh_vacancy = Vacancy('Гоша', 50000, 'url', 'employer')
 
 
 
