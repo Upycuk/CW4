@@ -1,27 +1,64 @@
 class Vacancy:
     """Класс для работы с вакансиями"""
-    def __init__(self, name: str, salary, url: str, employer: str):
-        self.name = name
+    def __init__(self, pk: int, name: str, salary_from: int, url: str, employer: str) -> None:
+        self.__pk = pk
+        self.__name = name
         self.url = url
         self.employer = employer
-        self.validate_salary(salary)
+        self.__salary_from = self.__validate_salary(salary_from)
 
-    def validate_salary(self, salary):
-        if salary is None:
-            self.salary_from = 0
-            self.salary_to = 0
-        else:
-            self.salary_from = salary["from"] if salary["from"] else 0
-            self.salary_to = salary["to"] if salary["to"] else 0
+    @property
+    def pk(self):
+        return self.__pk
 
-    def __str__(self):
+    @staticmethod
+    def __validate_salary(salary: int) -> int:
+        return 0 if salary < 0 else salary
+
+    def __str__(self) -> str:
         return f"""
-        Имя: {self.name}
-        Зарплата от {self.salary_from} до {self.salary_to}
+        ID: {self.__pk}
+        Имя: {self.__name}
+        Зарплата от {self.__salary_from}
         url: {self.url}
         Название компании: {self.employer}
-"""
+    """
+
+    def __repr__(self) -> str:
+        return f"""
+        ID: {self.__pk}
+        Имя: {self.__name}
+        Зарплата от {self.__salary_from}
+        url: {self.url}
+        Название компании: {self.employer}
+    """
 
     def __lt__(self, other):
         """сортировка"""
-        return (self.salary_from, self.salary_to) < (other.salary_from, other.salary_to)
+        return self.__salary_from < other.__salary_from
+
+    def __gt__(self, other):
+        """сортировка"""
+        return self.__salary_from > other.__salary_from
+
+    @classmethod
+    def create_vacancy(cls, vacancy_data: dict):
+        return cls(
+            pk=vacancy_data['pk'],
+            name=vacancy_data['name'],
+            url=vacancy_data['url'],
+            employer=vacancy_data['employer'],
+            salary_from=vacancy_data['salary_from'],
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            'pk': self.__pk,
+            'name': self.__name,
+            'url': self.url,
+            'employer': self.employer,
+            'salary_from': self.__salary_from,
+        }
+
+    def __hash__(self):
+        return hash(self.__pk)
