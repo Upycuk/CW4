@@ -100,10 +100,11 @@ class HhAPI(API):
             raise HhAPIException(f'Ошибка получения данных.\nresponse: {response.text}')
 
 
-    def check_status(response: Response) -> bool:
+    def check_status(self, response: Response) -> bool:
         """
         Проверяет статус данных.
         :param response:
         :return:
         """
         return response.status_code == 200
+
