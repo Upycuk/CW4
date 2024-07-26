@@ -57,6 +57,7 @@ class HhAPI(API):
         self.__params = {
             "per_page": 100,
             "search_field": "name",
+            'only_with_salary': 'true',
         }
 
     @property
@@ -95,7 +96,7 @@ class HhAPI(API):
         if not is_allowed:
             raise HhAPIException(f'Ошибка запроса данных.\nStatus Code: {response.status_code}, response: {response.text}')
         try:
-            return response.json()
+            return response.json()['items']
         except JSONDecodeError:
             raise HhAPIException(f'Ошибка получения данных.\nresponse: {response.text}')
 

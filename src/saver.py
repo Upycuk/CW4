@@ -24,7 +24,7 @@ class JsonSaver(Saver):
     """
 
     """
-    def __init__(self, path: Path=Path("data")):
+    def __init__(self, path: Path=Path("data/vacancy.json")):
         self.__path = path
 
     def load_data(self) -> list[dict]:
@@ -42,10 +42,10 @@ class JsonSaver(Saver):
         with open(self.__path, 'w', encoding='utf-8') as file:
             json.dump(data_for_write, file, ensure_ascii=False, indent=4)
 
-    def delite_data(self, query: dict) -> None:
+    def delite_data(self, query: dict, filter_by_salary=None) -> None:
         query = {
             'salary_from': 0,
-            'salary_to': 1000000000,
+            'salary_to': 0,
         }
 
         old_data = self.load_data()
